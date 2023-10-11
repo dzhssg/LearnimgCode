@@ -6,18 +6,18 @@ int main()
   int a[] = { 1,2,3,4,5,1,2,3,4 };
 
   int i = 0;
-  int sz = sizeof(a) / sizeof(a[0]);   //数组大小
+  int sz = sizeof(a) / sizeof(a[0]);   //鏁扮粍澶у皬
 
-  for (i = 0; i < sz; i++)	//循环数组每个元素
+  for (i = 0; i < sz; i++)	//寰幆鏁扮粍姣忎釜鍏冪礌
   {
-    int count = 0;				//计数变量
+    int count = 0;				//璁℃暟鍙橀噺
     int j = 0;
-    for (j = 0; j < sz; j++)		//循环数组每个元素
+    for (j = 0; j < sz; j++)		//寰幆鏁扮粍姣忎釜鍏冪礌
     {
-      if (a[i] == a[j])		//当元素相同的时候，count++
-        count++;			//因为两次都是从a[0]遍历，所以count最少为1
+      if (a[i] == a[j])		//褰撳厓绱犵浉鍚岀殑鏃跺�欙紝count++
+        count++;			//鍥犱负涓ゆ閮芥槸浠巃[0]閬嶅巻锛屾墍浠ount鏈�灏戜负1
     }
-    if (count == 1)				//当数组某个元素单独出现，打印出来
+    if (count == 1)				//褰撴暟缁勬煇涓厓绱犲崟鐙嚭鐜帮紝鎵撳嵃鍑烘潵
       printf("%d\n", a[i]);
   }
 
