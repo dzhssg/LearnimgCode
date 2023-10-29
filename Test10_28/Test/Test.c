@@ -152,10 +152,10 @@ void swap3(char* str, int  k)
 
 int main()
 {
-  char str[] = "abcd";
+  char str[] = "abcde";
   printf("请输入要输入要跳跃的数的个数：\n");
   int k = 0;
   scanf("%d", &k);
-  swap1(str,k);
+  swap3(str,k);
   printf("%s", str);
 }
