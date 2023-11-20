@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include"SeqList.h"
 
-void SLCheckCapacity(SL* ps)  // ¼ì²éÄÚ´æÊÇ·ñ×ã¹»£¬²»¹»¾ÍÀ©Èİ¡£
+void SLCheckCapacity(SL* ps)  // æ£€æŸ¥å†…å­˜æ˜¯å¦è¶³å¤Ÿï¼Œä¸å¤Ÿå°±æ‰©å®¹ã€‚
 {
     if (ps->size == ps->capacity)
     {
@@ -17,7 +17,7 @@ void SLCheckCapacity(SL* ps)  // ¼ì²éÄÚ´æÊÇ·ñ×ã¹»£¬²»¹»¾ÍÀ©Èİ¡£
     }
 }
 
-void SLprintf(SL* ps)   // Êı¾İ±í´òÓ¡
+void SLprintf(SL* ps)   // æ•°æ®è¡¨æ‰“å°
 {
   for (int i = 0; i < ps->size; i++)
   {
@@ -27,7 +27,7 @@ void SLprintf(SL* ps)   // Êı¾İ±í´òÓ¡
 }
 
 
-void SLInit(SL *ps)     // Êı¾İ±í³õÊ¼»¯
+void SLInit(SL *ps)     // æ•°æ®è¡¨åˆå§‹åŒ–
 {
   assert(ps);
   ps->a = NULL;
@@ -35,7 +35,7 @@ void SLInit(SL *ps)     // Êı¾İ±í³õÊ¼»¯
   ps->capacity = 0;
 }
 
-void SLDestroy(SL* ps)  // Êı¾İ±íÏú»Ù
+void SLDestroy(SL* ps)  // æ•°æ®è¡¨é”€æ¯
 {
   assert(ps);
   if (ps->a != NULL)
@@ -47,14 +47,7 @@ void SLDestroy(SL* ps)  // Êı¾İ±íÏú»Ù
   }
 }
 
-void SLPushBack(SL* ps, SLDataType x)   // Í·²å
-{
-  assert(ps);
-  SLCheckCapacity(ps);
-  ps->a[ps->size++] = x;
-}
-
-void SLPushFront(SL* ps, SLDataType x)  // Î²²å
+void SLPushFront(SL* ps, SLDataType x)  // å¤´æ’
 {
   assert(ps);
   SLCheckCapacity(ps);
@@ -68,14 +61,14 @@ void SLPushFront(SL* ps, SLDataType x)  // Î²²å
   ps->size++;
 }
 
-void SLPopBack(SL* ps)  // Í·É¾
+void SLPushBack(SL* ps, SLDataType x)   // å°¾æ’
 {
   assert(ps);
-  assert(ps->size>0);
-  ps->size--;
+  SLCheckCapacity(ps);
+  ps->a[ps->size++] = x;
 }
 
-void SLPopFront(SL* ps) // Î²É¾
+void SLPopFront(SL* ps) // å¤´åˆ 
 {
   assert(ps);
   assert(ps->size>0);
@@ -88,8 +81,15 @@ void SLPopFront(SL* ps) // Î²É¾
   ps->size--;
 }
 
-// posÊÇÏÂ±ê
-void SLInsert(SL* ps, int pos, SLDataType x)  // ÈÎÒâÏÂ±êÎ»ÖÃµÄ²åÈë
+void SLPopBack(SL* ps)  // å°¾åˆ 
+{
+  assert(ps);
+  assert(ps->size>0);
+  ps->size--;
+}
+
+// posæ˜¯ä¸‹æ ‡
+void SLInsert(SL* ps, int pos, SLDataType x)  // ä»»æ„ä¸‹æ ‡ä½ç½®çš„æ’å…¥
 {
   assert(ps);
   assert(pos >= 0 && pos <= ps->size);
@@ -103,10 +103,10 @@ void SLInsert(SL* ps, int pos, SLDataType x)  // ÈÎÒâÏÂ±êÎ»ÖÃµÄ²åÈë
   ps->a[pos] = x;
   ps->size++;
 }
-void SLErase(SL* ps, int pos)    // ÈÎÒâÏÂ±êÎ»ÖÃµÄÉ¾³ı
+void SLErase(SL* ps, int pos)    // ä»»æ„ä¸‹æ ‡ä½ç½®çš„åˆ é™¤
 {
   assert(ps);
-  assert(pos >= 0 && pos < ps->size);   // ÕâÀïÉ¾³ı²»ÄÜÓÃµÈÓÚps->size,ps->size¿´×÷ÏÂ±êµÄ»°Ïàµ±ÓÚÏÂ±êµÄ×îºóÒ»¸öÎ»ÖÃ+1
+  assert(pos >= 0 && pos < ps->size);   // è¿™é‡Œåˆ é™¤ä¸èƒ½ç”¨ç­‰äºps->size,ps->sizeçœ‹ä½œä¸‹æ ‡çš„è¯ç›¸å½“äºä¸‹æ ‡çš„æœ€åä¸€ä¸ªä½ç½®+1
   int begin = pos + 1;
   while (begin < ps->size)
   {
