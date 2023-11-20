@@ -13,10 +13,12 @@ typedef struct Seqlist
 
 void SLInit(SL *ps);    // 数据表初始化
 void SLDestroy(SL *ps); // 数据表销毁
-void SLPushBack(SL *ps ,SLDataType x);  // 头插
-void SLPushFront(SL* ps, SLDataType x); // 尾插
-void SLPopBack(SL* ps);   // 头删
-void SLPopFront(SL* ps);  // 尾删
+
+void SLPushFront(SL* ps, SLDataType x); // 头插
+void SLPushBack(SL *ps ,SLDataType x);  // 尾插
+
+void SLPopFront(SL* ps);  // 头删
+void SLPopBack(SL* ps);   // 尾删
 
 void SLCheckCapacity(SL* ps); // 检查内存是否足够，不够就扩容。
 void SLprintf(SL* ps);  // 数据表打印
