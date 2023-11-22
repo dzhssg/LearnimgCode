@@ -2,20 +2,24 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<assert.h>
-typedef int SLDataType;
+#include"Contact.h"
 
-typedef struct Seqlist
+typedef CInfo SLDataType; 
+//typedef int SLDataType;
+//把顺序表的数据结构改为通讯录的结构体类型
+
+typedef struct SeqList
 {
   SLDataType* a;
   int size;       // 有效数据
   int capacity;   // 空间容量
 }SL;
 
-void SLInit(SL *ps);    // 数据表初始化
-void SLDestroy(SL *ps); // 数据表销毁
+void SLInit(SL* ps);    // 数据表初始化
+void SLDestroy(SL* ps); // 数据表销毁
 
 void SLPushFront(SL* ps, SLDataType x); // 头插
-void SLPushBack(SL *ps ,SLDataType x);  // 尾插
+void SLPushBack(SL* ps, SLDataType x);  // 尾插
 
 void SLPopFront(SL* ps);  // 头删
 void SLPopBack(SL* ps);   // 尾删
