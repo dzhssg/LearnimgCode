@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include"SeqList.h"
 
+<<<<<<< HEAD
 void menu()
 {
   printf("***********************************************\n");
@@ -10,10 +11,19 @@ void menu()
   printf("***********5.打印联系人 0.退出*****************\n");
   printf("***********************************************\n");
   printf("***********************************************\n");
+=======
+void contact01()
+{
+  CInfo con;
+  ContactInit(&con);
+  ContactAdd(&con);
+  Contactshow(&con);
+>>>>>>> c3efaaa07042c1b670099cc730e87c84c6f5a1d2
 }
 
 int main()
 {
+<<<<<<< HEAD
   
   int open = 0;
   contact con;
@@ -48,4 +58,8 @@ int main()
     }
    } while (open !=0);
    ContactDestroy(&con);
+=======
+  contact01();
+  return 0;
+>>>>>>> c3efaaa07042c1b670099cc730e87c84c6f5a1d2
 }
