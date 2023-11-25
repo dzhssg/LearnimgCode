@@ -28,55 +28,59 @@ void ContactAdd(contact** pcon)
   SLPushBack(pcon, info);
 }
 
-int FindByName(contact* pcon,char name)
+
+int FindByName(contact* pcon, char name[])
 {
-  for (int i = 0; i < pcon->size; pcon->size++)
+  for (int i = 0; i < pcon->size; i++)
   {
-    if (strcmp(pcon->size,name)==0)
-    {
-      return i;
-    }
+    if (strcmp(pcon->a[i], name) == 0)
+    return i;
   }
   return -1;
 }
 
+
+
 void ContactDel(contact* pcon)
 {
-  printf("请输入要删除的用户的名称:\n");
+
+  printf("请输入要删除的用户名称：\n");
   char name[NAME_MAX];
-  scanf("%s", &name);
-  int findidex = FindByName(pcon,name);
-  SLPopBack(pcon);
-  if (findidex < 0)
+  scanf("%s", name);
+  int Findidex = FindByName(pcon, name);
+  if (Findidex < 0)
   {
-    printf("要删除的联系人不存在");
-      return;
+    printf("要删除的联系人不存在！\n");
+    return;
   }
-  SLErase(pcon, findidex);
+  
+  SLErase(pcon, Findidex);
 }
+
 
 void ContactModify(contact* pcon)
 {
-  printf("请输入要修改的用户名称：\n");
+  printf("请输入要修改的联系人名称：\n");
   char name[NAME_MAX];
-    scanf("%s", name);
-    int find = FindByName(pcon, name);
-      if (find < 0)
-      {
-        printf("要修改的用户不存在！\n");
-        return;
-      }
-      printf("请输入新的用户名称：\n");
-      scanf("%s", pcon->a[find].name);
-      printf("请输入新的用户性别：\n");
-      scanf("%s", pcon->a[find].sex);
-      printf("请输入新的用户年龄：\n");
-      scanf("%s", pcon->a[find].age);
-      printf("请输入新的用户电话：\n");
-      scanf("%s", pcon->a[find].tel);
-      printf("请输入新的用户地址：\n");
-      scanf("%s", pcon->a[find].addr);
-      printf("修改成功\n");
+  scanf("%s", name);
+  int find = FindByName(pcon, name);
+  if (find < 0)
+  {
+    printf("要修改的用户名称不存在！\n");
+    return;
+  }
+  printf("请输入新的用户名称：\n");
+  scanf("%s", pcon->a[find].name);
+  printf("请输入新的用户性别：\n");
+  scanf("%s", pcon->a[find].sex);
+  printf("请输入新的用户年龄：\n");
+  scanf("%d", &pcon->a[find].age);
+  printf("请输入新的用户电话：\n");
+  scanf("%s", pcon->a[find].tel);
+  printf("请输入新的用户住址：\n");
+  scanf("%s", pcon->a[find].addr);
+
+  printf("修改成功！\n");
 }
 
 void Contactshow(contact* pcon)
@@ -105,7 +109,7 @@ void ContactFind(contact* pcon)
     printf("该联系人不存在\n");
     return;
   }
-  printf("%s %s %d %s %s\n",
+  printf("%-4s %-4s %-4d %-4s %-4s\n",
     pcon->a[find].name,
     pcon->a[find].sex,
     pcon->a[find].age,

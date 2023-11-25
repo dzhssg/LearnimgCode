@@ -15,11 +15,19 @@ typedef struct SeqList
   int capacity;   // 空间容量
 }SL;
 
+
 void SLInit(SL* ps);    // 数据表初始化
 void SLDestroy(SL* ps); // 数据表销毁
 
 void SLPushFront(SL* ps, SLDataType x); // 头插
 void SLPushBack(SL* ps, SLDataType x);  // 尾插
+
+void SLInit(SL *ps);    // 数据表初始化
+void SLDestroy(SL *ps); // 数据表销毁
+
+void SLPushFront(SL* ps, SLDataType x); // 头插
+void SLPushBack(SL *ps ,SLDataType x);  // 尾插
+
 
 void SLPopFront(SL* ps);  // 头删
 void SLPopBack(SL* ps);   // 尾删
