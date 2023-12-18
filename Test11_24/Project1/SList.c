@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include "SList.h"
-void SLTPrint(SLNode* phead) //´òÓ¡µ¥Á´±í
+void SLTPrint(SLNode* phead) //æ‰“å°å•é“¾è¡¨
 {
   SLNode* cur = phead;
   while (cur != NULL)
@@ -11,7 +11,7 @@ void SLTPrint(SLNode* phead) //´òÓ¡µ¥Á´±í
   printf("NULL");
 }
 
-SLNode* CreateNode(SLNDataType x) //ĞÂ½¨½Úµã£¬¿ª±Ù¿Õ¼ä
+SLNode* CreateNode(SLNDataType x) //æ–°å»ºèŠ‚ç‚¹ï¼Œå¼€è¾Ÿç©ºé—´
 {
   SLNode* newnode = (SLNode*)malloc(sizeof(SLNode));
   if (newnode == NULL)
@@ -24,8 +24,9 @@ SLNode* CreateNode(SLNDataType x) //ĞÂ½¨½Úµã£¬¿ª±Ù¿Õ¼ä
   return newnode;
 }
 
-void SLTPushBack(SLNode** pphead, SLNDataType x) //Î²²å
+void SLTPushBack(SLNode** pphead, SLNDataType x) //å°¾æ’
 {
+  assert(pphead);
   SLNode* newnode = CreateNode(x);
   if (* pphead == NULL)
   {
@@ -33,16 +34,16 @@ void SLTPushBack(SLNode** pphead, SLNDataType x) //Î²²å
   }
   else
   {
-    SLNode* tail = * pphead; //ÕÒÎ²
+    SLNode* tail = * pphead; //æ‰¾å°¾
     while (tail->next != NULL)
     {
-      tail = tail->next;  //ÒòÎªtailÊÇ¾Ö²¿±äÁ¿£¬¶øtail->nextÊÇ½á¹¹Ìå,³öÀ´×÷ÓÃÓòtail¾ÍÏú»ÙÁË
+      tail = tail->next;  //å› ä¸ºtailæ˜¯å±€éƒ¨å˜é‡ï¼Œè€Œtail->nextæ˜¯ç»“æ„ä½“,å‡ºæ¥ä½œç”¨åŸŸtailå°±é”€æ¯äº†
     }
-    tail->next = newnode; //ËùÒÔÕâÀï°Ñnewnode¸³Öµ¸øtail->next
+    tail->next = newnode; //æ‰€ä»¥è¿™é‡ŒæŠŠnewnodeèµ‹å€¼ç»™tail->next
   }
 }
   
-void SLTPushFront(SLNode** pphead, SLNDataType x) //Í·²å
+void SLTPushFront(SLNode** pphead, SLNDataType x) //å¤´æ’
 { 
   SLNode* newnode = (SLNode*)malloc(sizeof(SLNode));
   newnode->next =* pphead;
@@ -51,7 +52,7 @@ void SLTPushFront(SLNode** pphead, SLNDataType x) //Í·²å
   
 }
 
-void SLTPopBack(SLNode** pphead)  //Î²É¾
+void SLTPopBack(SLNode** pphead)  //å°¾åˆ 
 {
   assert(pphead);
   assert(*pphead);
@@ -62,7 +63,7 @@ void SLTPopBack(SLNode** pphead)  //Î²É¾
   }
   else
   {
-     SLNode* prev = NULL;
+   /*  SLNode* prev = NULL;
      SLNode* tail = *pphead;
      while (tail->next != NULL)
      {
@@ -71,21 +72,21 @@ void SLTPopBack(SLNode** pphead)  //Î²É¾
      }
      free(tail);
      tail = NULL;
-     prev->next = NULL;
+     prev->next = NULL;*/
 
-   /* SLNode* tail = * pphead;
+    SLNode* tail = * pphead;
     while (tail->next->next != NULL)
     {
       tail = tail->next;
     }
     free(tail->next);
-    tail->next = NULL;*/
+    tail->next = NULL;
   }
 }
  
 
 
-void SLTPopFront(SLNode** pphead) //Í·É¾
+void SLTPopFront(SLNode** pphead) //å¤´åˆ 
 {
   assert(*pphead);
   SLNode* tail = *pphead;
@@ -95,7 +96,7 @@ void SLTPopFront(SLNode** pphead) //Í·É¾
 }
 
 
-void* SLTInster(SLNode** pphead, SLNode* pos, SLNDataType x) //Ö¸¶¨Î»ÖÃÇ°Ãæ²åÈë
+void* SLTInster(SLNode** pphead, SLNode* pos, SLNDataType x) //æŒ‡å®šä½ç½®å‰é¢æ’å…¥
 {
   assert(pos);
   assert(pphead);
@@ -116,7 +117,7 @@ void* SLTInster(SLNode** pphead, SLNode* pos, SLNDataType x) //Ö¸¶¨Î»ÖÃÇ°Ãæ²åÈë
   node->next = pos;
 }
 
-void* SLTEraseAfter(SLNode* pos) //Ö¸¶¨Î»ÖÃºóÃæÉ¾³ı
+void* SLTEraseAfter(SLNode* pos) //æŒ‡å®šä½ç½®åé¢åˆ é™¤
 {
   assert(pos && pos->next);
   SLNode* del = pos->next;
@@ -124,7 +125,7 @@ void* SLTEraseAfter(SLNode* pos) //Ö¸¶¨Î»ÖÃºóÃæÉ¾³ı
   free(del);
 }
 
-void SLTDestroy(SLNode** pphead) //Ïú»Ùµ¥Á´±í
+void SLTDestroy(SLNode** pphead) //é”€æ¯å•é“¾è¡¨
 {
   assert(pphead);
   SLNode* cur= *pphead;
@@ -137,9 +138,9 @@ void SLTDestroy(SLNode** pphead) //Ïú»Ùµ¥Á´±í
   *pphead = NULL;
 }
 
-//²éÕÒµÚÒ»¸öÎªxµÄ½Úµã
+//æŸ¥æ‰¾ç¬¬ä¸€ä¸ªä¸ºxçš„èŠ‚ç‚¹
 
-SLNode* SLTFind(SLNode** pphead, SLNDataType x) //posµÄ²éÕÒº¯Êı
+SLNode* SLTFind(SLNode** pphead, SLNDataType x) //posçš„æŸ¥æ‰¾å‡½æ•°
 {
   assert(pphead);
   SLNode* cur = *pphead;

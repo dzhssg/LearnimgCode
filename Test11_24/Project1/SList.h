@@ -7,7 +7,7 @@ typedef int SLNDataType;
 typedef struct SListNode
 {
   SLNDataType val;
-  struct SList* next;
+  struct SListNode* next;
  
    //这里只是指针，不是结构体
 
