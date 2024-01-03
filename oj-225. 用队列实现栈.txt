@@ -1,0 +1,233 @@
+typedef int QDataType; // 定义队列数据类型为int
+
+// 队列节点的结构体定义
+typedef struct QueueNode
+{
+  QDataType val; // 节点存储的数据
+  struct QueueNode* next; // 指向下一个节点的指针
+} QNode;
+
+// 队列的结构体定义
+typedef struct Queue
+{
+  QNode* phead; // 指向队列头部的指针
+  QNode* ptail; // 指向队列尾部的指针
+  int size; // 队列的大小
+} Queue;
+
+// 函数声明
+void QInit(Queue* pq); // 初始化队列
+void QDestroy(Queue* pq); // 销毁队列
+
+void QPush(Queue* pq, QDataType x); // 向队列中添加元素
+void QPop(Queue* pq); // 从队列中移除元素
+
+QDataType QueueFront(Queue* pq); // 获取队列头部元素
+QDataType QueueBack(Queue* pq); // 获取队列尾部元素
+
+bool QueueEmpty(Queue* pq); // 检查队列是否为空
+int QueueSize(Queue* pq); // 获取队列的大小
+
+// 初始化队列
+void QInit(Queue* pq)
+{
+  assert(pq); // 断言队列指针非空
+  pq->phead = pq->ptail = NULL; // 将头指针和尾指针都设为NULL
+  pq->size = 0; // 将队列大小设置为0
+}
+
+// 销毁队列
+void QDestroy(Queue* pq)
+{
+  assert(pq); // 断言队列指针非空
+  QNode* cur = pq->phead;
+  while (cur)
+  {
+    QNode* next = cur->next; // 保存下一个节点
+    free(cur); // 释放当前节点
+    cur = next; // 移动到下一个节点
+  }
+  pq->phead = NULL; // 将头指针设为NULL
+  pq->ptail = NULL; // 将尾指针设为NULL
+  pq->size = 0; // 将队列大小设置为0
+}
+
+// 向队列中添加元素
+void QPush(Queue* pq, QDataType x)
+{
+  assert(pq); // 断言队列指针非空
+  QNode* newNode = (QNode*)malloc(sizeof(QNode)); // 分配新节点内存
+  if (newNode == NULL)
+  {
+    perror("malloc fail"); // 内存分配失败处理
+    exit(-1);
+  }
+
+  newNode->val = x; // 设置新节点的值
+  newNode->next = NULL; // 新节点的下一个节点为NULL
+  if (pq->ptail == NULL) // 如果队列为空
+  {
+    pq->phead = pq->ptail = newNode; // 队列头尾都指向新节点
+  }
+  else
+  {
+    pq->ptail->next = newNode; // 将新节点接到队列尾部
+    pq->ptail = newNode; // 更新尾指针
+  }
+  pq->size++; // 队列大小增加
+}
+
+// 从队列中移除元素
+void QPop(Queue* pq)
+{
+  assert(pq); // 断言队列指针非空
+  assert(pq->phead); // 断言队列不为空
+  QNode* Del = pq->phead; // 保存要删除的节点
+  pq->phead = pq->phead->next; // 更新头指针
+  free(Del); // 释放节点内存
+  if (pq->phead == NULL) // 如果队列变空
+  {
+    pq->ptail = NULL; // 更新尾指针
+  }
+  pq->size--; // 队列大小减少
+}
+
+// 获取队列头部元素的值
+QDataType QueueFront(Queue* pq)
+{
+  assert(pq); // 断言队列指针非空
+  assert(pq->phead); // 断言队列不为空
+  return pq->phead->val; // 返回头部元素的值
+}
+
+// 获取队列尾部元素的值
+QDataType QueueBack(Queue* pq)
+{
+  assert(pq); // 断言队列指针非空
+  assert(pq->ptail); // 断言队列不为空
+  return pq->ptail->val; // 返回尾部元素的值
+}
+
+// 检查队列是否为空
+bool QueueEmpty(Queue* pq)
+{
+  assert(pq); // 断言队列指针非空
+  return pq->phead == NULL; // 如果头指针为NULL，则队列为空
+}
+
+// 获取队列的大小
+int QueueSize(Queue* pq)
+{
+  return pq->size; // 返回队列的大小
+}
+
+// 定义一个使用两个队列模拟的栈的结构体
+typedef struct
+{
+    Queue q1; // 第一个队列
+    Queue q2; // 第二个队列
+} MyStack;
+
+// 创建一个新的栈
+MyStack* myStackCreate() 
+{
+    // 动态分配内存给新栈
+    MyStack* newStack =(MyStack*)malloc(sizeof(MyStack));
+    if (!newStack)
+    {
+        perror("malloc fail"); // 如果内存分配失败，输出错误信息并退出
+        exit(-1);
+    }
+
+    // 初始化两个队列
+    QInit(&(newStack->q1));
+    QInit(&(newStack->q2));
+    return newStack;  
+}
+
+// 将一个元素推入栈中
+void myStackPush(MyStack* obj, int x) 
+{
+    assert(obj); // 确保栈对象非空
+    // 总是将元素推入非空队列中
+    if(!QueueEmpty(&obj->q1))
+    {
+        QPush(&obj->q1, x);
+    }
+    else
+    {
+        QPush(&obj->q2, x);
+    }
+}
+
+// 从栈中弹出一个元素
+int myStackPop(MyStack* obj) 
+{ 
+    assert(obj); // 确保栈对象非空
+    Queue* empty = &obj->q1; // 一个指向可能为空的队列的指针
+    Queue* noEmpty = &obj->q2; // 一个指向非空队列的指针
+    // 确定哪个队列是空的，哪个是非空的
+    if(!QueueEmpty(empty))
+    {
+        empty = &obj->q2;
+        noEmpty = &obj->q1;
+    }
+    // 将元素从非空队列转移到空队列，直到只剩下一个元素
+    while(QueueSize(noEmpty) > 1)
+    {
+        QPush(empty, QueueFront(noEmpty));
+        QPop(noEmpty);
+    }
+    // 弹出并返回最后一个元素
+    int top = QueueFront(noEmpty);
+    QPop(noEmpty);
+    return top;
+}
+
+// 获取栈顶元素
+int myStackTop(MyStack* obj)
+{
+    assert(obj); // 确保栈对象非空
+    // 返回非空队列的尾部元素（栈顶元素）
+    if(!QueueEmpty(&obj->q1))
+    {
+        return QueueBack(&obj->q1);
+    }
+    else
+    {
+        return QueueBack(&obj->q2);
+    }
+}
+
+// 检查栈是否为空
+bool myStackEmpty(MyStack* obj) 
+{  
+    assert(obj); // 确保栈对象非空
+    // 如果两个队列都为空，栈为空
+    return QueueEmpty(&obj->q1) && QueueEmpty(&obj->q2);
+}
+
+// 释放栈所占用的资源
+void myStackFree(MyStack* obj) 
+{
+    assert(obj); // 确保栈对象非空
+    // 销毁两个队列
+    QDestroy(&obj->q1);
+    QDestroy(&obj->q2);
+    // 释放栈对象所占用的内存
+    free(obj);
+}
+
+/**
+ * Your MyStack struct will be instantiated and called as such:
+ * MyStack* obj = myStackCreate();
+ * myStackPush(obj, x);
+ 
+ * int param_2 = myStackPop(obj);
+ 
+ * int param_3 = myStackTop(obj);
+ 
+ * bool param_4 = myStackEmpty(obj);
+ 
+ * myStackFree(obj);
+*/
