@@ -1,0 +1,76 @@
+// 定义循环队列的结构体
+typedef struct {
+    int *a;     // 队列数组
+    int k;      // 队列的最大容量
+    int front;  // 指向队列头部的指针
+    int back;   // 指向队列尾部的下一个位置的指针
+} MyCircularQueue;
+
+// 创建循环队列
+MyCircularQueue* myCircularQueueCreate(int k) {
+    MyCircularQueue* obj = (MyCircularQueue*)malloc(sizeof(MyCircularQueue));
+    obj->a = (int *)malloc(sizeof(int)*(k+1)); // 为队列分配内存，大小为 k+1
+    obj->front = 0; // 初始时，front 和 back 都设置为 0
+    obj->back = 0;
+    obj->k = k; // 设置队列的最大容量
+    return obj;
+}
+
+// 检查队列是否为空
+bool myCircularQueueIsEmpty(MyCircularQueue* obj) {
+    return obj->front == obj->back; // 如果 front 和 back 相等，则队列为空
+}
+
+// 检查队列是否已满
+bool myCircularQueueIsFull(MyCircularQueue* obj) {
+    return (obj->back + 1) % (obj->k + 1) == obj->front; // 如果 back 的下一个位置是 front，则队列已满
+}
+
+// 向队列中添加元素
+bool myCircularQueueEnQueue(MyCircularQueue* obj, int value) {
+    if (myCircularQueueIsFull(obj)) // 如果队列已满，则无法添加元素
+        return false;
+
+    obj->a[obj->back] = value; // 在 back 的位置插入元素
+    obj->back = (obj->back + 1) % (obj->k + 1); // 更新 back 的位置
+    return true;
+}
+
+// 从队列中删除元素
+bool myCircularQueueDeQueue(MyCircularQueue* obj) {
+    if (myCircularQueueIsEmpty(obj)) // 如果队列为空，则无法删除元素
+        return false;
+
+    obj->front = (obj->front + 1) % (obj->k + 1); // 更新 front 的位置
+    return true;
+}
+
+// 获取队列头部的元素
+int myCircularQueueFront(MyCircularQueue* obj) {
+    if (myCircularQueueIsEmpty(obj)) // 如果队列为空，返回 -1
+        return -1;
+    return obj->a[obj->front]; // 返回队列头部的元素
+}
+
+// 获取队列尾部的元素
+int myCircularQueueRear(MyCircularQueue* obj) {
+    if (myCircularQueueIsEmpty(obj)) // 如果队列为空，返回 -1
+        return -1;
+    return obj->a[(obj->back - 1 + obj->k + 1) % (obj->k + 1)]; // 返回队列尾部的元素
+}
+
+// 释放队列占用的内存
+void myCircularQueueFree(MyCircularQueue* obj) {
+    free(obj->a); // 释放数组内存
+    free(obj);    // 释放队列结构体内存
+}
+
+// 使用说明：
+// MyCircularQueue* obj = myCircularQueueCreate(k);
+// bool param_1 = myCircularQueueEnQueue(obj, value);
+// bool param_2 = myCircularQueueDeQueue(obj);
+// int param_3 = myCircularQueueFront(obj);
+// int param_4 = myCircularQueueRear(obj);
+// bool param_5 = myCircularQueueIsEmpty(obj);
+// bool param_6 = myCircularQueueIsFull(obj);
+// myCircularQueueFree(obj);
