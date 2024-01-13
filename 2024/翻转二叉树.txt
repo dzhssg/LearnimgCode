@@ -1,0 +1,20 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+struct TreeNode* invertTree(struct TreeNode* root) 
+{
+    if(root == NULL)
+    {
+        return NULL;
+    }
+    struct TreeNode*  rootleft = invertTree(root->left);
+    struct TreeNode*  rootright = invertTree(root->right);
+    root->left = rootright;
+    root->right = rootleft;
+    return root;   
+}
