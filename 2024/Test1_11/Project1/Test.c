@@ -5,7 +5,7 @@
 void HeapSort(int* a, int n)
 {
   // 构建初始大顶堆
-  for (int i = (n / 2) - 1; i >= 0; i--)
+  for (int i = (n - 1 - 1) / 2; i >= 0; --i)
   {
     DnAdd(a, i, n);
   }
@@ -19,9 +19,10 @@ void HeapSort(int* a, int n)
 }
 
 
-void CreateNDate()
+
+void CreateNData()
 {
-  // 造数据
+
   int n = 10000000;
   srand(time(0));
   const char* file = "data.txt";
@@ -50,47 +51,53 @@ void PrintTopK(const char* file, int k)
     return;
   }
 
-  // 建一个k个数小堆
+  // 建一个k个数的最小堆
   int* minheap = (int*)malloc(sizeof(int) * k);
   if (minheap == NULL)
   {
     perror("malloc error");
+    fclose(fout); // 记得关闭文件指针
     return;
   }
 
-  // 读取前k个，建小堆
+  // 读取前k个数，以构建最小堆
   for (int i = 0; i < k; i++)
   {
-    fscanf(fout, "%d", &minheap[i]);
-    AdjustUp(minheap, i);
+    if (fscanf(fout, "%d", &minheap[i]) != 1) // 检查fscanf的返回值
+    {
+      perror("fscanf error");
+      free(minheap);
+      fclose(fout);
+      return;
+    }
+    UpAdd(minheap, i); // 由于是读取前k个数，这里应该是UpAdd
   }
 
+  // 遍历文件中剩余的数，维护最小堆
   int x = 0;
   while (fscanf(fout, "%d", &x) != EOF)
   {
-    if (x > minheap[0])
+    if (x > minheap[0]) // 只有新的数比堆顶大时，才替换并进行下沉
     {
       minheap[0] = x;
-      AdjustDown(minheap, k, 0);
+      DnAdd(minheap, 0, k); // 注意这里是对堆顶进行下沉，所以传入的应该是0
     }
   }
 
+  // 输出结果
+  HeapSort(minheap, k); // 排序最小堆，使之按照顺序输出
   for (int i = 0; i < k; i++)
   {
     printf("%d ", minheap[i]);
   }
   printf("\n");
 
-  free(minheap);
-  fclose(fout);
+  free(minheap); // 释放内存
+  fclose(fout); // 关闭文件
 }
+
 int main()
 {
-  //int arr[] = { 8,6,4,2,0,9,4 };
-  //HeapSort(arr, sizeof(arr) / sizeof(arr[0]));
-  //for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
-  //{
-  //  printf("%d ", arr[i]);
-  //}
-
+	CreateNData();
+	PrintTopK("Data.txt", 5);
 }
