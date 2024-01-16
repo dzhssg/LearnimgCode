@@ -1,125 +1,125 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include"Heap.h"
 
-// ³õÊ¼»¯¶Ñ
+// åˆå§‹åŒ–å †
 void HeapInit(Hp* hp)
 {
-  assert(hp);  // È·±£¶ÑÖ¸ÕëÓĞĞ§
-  hp->a = NULL;  // ¶ÑÊı×éÖ¸ÕëÖÃ¿Õ
-  hp->size = 0;  // ³õÊ¼»¯¶Ñ´óĞ¡Îª0
-  hp->capacity = 0;  // ³õÊ¼»¯¶ÑÈİÁ¿Îª0
+  assert(hp);  // ç¡®ä¿å †æŒ‡é’ˆæœ‰æ•ˆ
+  hp->a = NULL;  // å †æ•°ç»„æŒ‡é’ˆç½®ç©º
+  hp->size = 0;  // åˆå§‹åŒ–å †å¤§å°ä¸º0
+  hp->capacity = 0;  // åˆå§‹åŒ–å †å®¹é‡ä¸º0
 }
 
-// Ïú»Ù¶Ñ
+// é”€æ¯å †
 void HeapDestroy(Hp* hp)
 {
-  assert(hp);  // È·±£¶ÑÖ¸ÕëÓĞĞ§
-  free(hp->a);  // ÊÍ·Å¶ÑÊı×éÄÚ´æ
-  hp->a = NULL;  // ½«¶ÑÊı×éÖ¸ÕëÖÃ¿Õ
-  hp->size = hp->capacity = 0;  // ÖØÖÃ¶Ñ´óĞ¡ºÍÈİÁ¿Îª0
+  assert(hp);  // ç¡®ä¿å †æŒ‡é’ˆæœ‰æ•ˆ
+  free(hp->a);  // é‡Šæ”¾å †æ•°ç»„å†…å­˜
+  hp->a = NULL;  // å°†å †æ•°ç»„æŒ‡é’ˆç½®ç©º
+  hp->size = hp->capacity = 0;  // é‡ç½®å †å¤§å°å’Œå®¹é‡ä¸º0
 }
 
-// ½»»»Á½¸öÔªËØµÄÖµ
+// äº¤æ¢ä¸¤ä¸ªå…ƒç´ çš„å€¼
 void Swap(HPDataType* p1, HPDataType* p2)
 {
-  HPDataType tmp = 0;  // ÁÙÊ±±äÁ¿ÓÃÓÚ½»»»
+  HPDataType tmp = 0;  // ä¸´æ—¶å˜é‡ç”¨äºäº¤æ¢
   tmp = *p1;
   *p1 = *p2;
   *p2 = tmp;
 }
 
-// ÉÏ¸¡µ÷Õû
+// ä¸Šæµ®è°ƒæ•´
 void UpAdd(HPDataType* a, HPDataType child)
 {
-  int parent = (child - 1) / 2;  // ÕÒµ½¸¸½Úµã
+  int parent = (child - 1) / 2;  // æ‰¾åˆ°çˆ¶èŠ‚ç‚¹
   while (child > 0)
   {
-    if (a[child] < a[parent])  // Èç¹û×Ó½ÚµãĞ¡ÓÚ¸¸½Úµã
+    if (a[child] < a[parent])  // å¦‚æœå­èŠ‚ç‚¹å°äºçˆ¶èŠ‚ç‚¹
     {
-      Swap(&a[child], &a[parent]);  // ½»»»Á½Õß
-      child = parent;  // ¸üĞÂ×Ó½ÚµãºÍ¸¸½ÚµãµÄÎ»ÖÃ
+      Swap(&a[child], &a[parent]);  // äº¤æ¢ä¸¤è€…
+      child = parent;  // æ›´æ–°å­èŠ‚ç‚¹å’Œçˆ¶èŠ‚ç‚¹çš„ä½ç½®
       parent = (child - 1) / 2;
     }
     else
     {
-      break;  // Èç¹û²»ĞèÒª½»»»£¬ÔòÖÕÖ¹Ñ­»·
+      break;  // å¦‚æœä¸éœ€è¦äº¤æ¢ï¼Œåˆ™ç»ˆæ­¢å¾ªç¯
     }
   }
 }
 
-// Ïò¶ÑÖĞ²åÈëÔªËØ
+// å‘å †ä¸­æ’å…¥å…ƒç´ 
 void HeapPush(Hp* hp, HPDataType x)
 {
-  assert(hp);  // È·±£¶ÑÖ¸ÕëÓĞĞ§
+  assert(hp);  // ç¡®ä¿å †æŒ‡é’ˆæœ‰æ•ˆ
   if (hp->size == hp->capacity)
   {
-    // Èç¹û¶ÑÒÑÂú£¬À©´óÈİÁ¿
+    // å¦‚æœå †å·²æ»¡ï¼Œæ‰©å¤§å®¹é‡
     int newcapacity = hp->capacity == 0 ? 4 : hp->capacity * 2;
     HPDataType* tmp = (HPDataType*)realloc(hp->a, sizeof(HPDataType) * newcapacity);
     if (tmp == NULL)
     {
-      perror("realloc fail");  // ÄÚ´æ·ÖÅäÊ§°Ü
+      perror("realloc fail");  // å†…å­˜åˆ†é…å¤±è´¥
       exit(-1);
     }
     hp->a = tmp;
     hp->capacity = newcapacity;
   }
-  hp->a[hp->size] = x;  // ²åÈëÔªËØ
-  hp->size++;  // ¶Ñ´óĞ¡Ôö¼Ó
-  UpAdd(hp->a, hp->size - 1);  // ÉÏ¸¡µ÷Õû
+  hp->a[hp->size] = x;  // æ’å…¥å…ƒç´ 
+  hp->size++;  // å †å¤§å°å¢åŠ 
+  UpAdd(hp->a, hp->size - 1);  // ä¸Šæµ®è°ƒæ•´
 }
 
-
+// ä¸‹æ²‰è°ƒæ•´
 void DnAdd(HPDataType* a, HPDataType parent, int size)
 {
-  int child = parent * 2 + 1;  // ÕÒµ½×ó×Ó½Úµã
+  int child = parent * 2 + 1;  // æ‰¾åˆ°å·¦å­èŠ‚ç‚¹
   while (child < size)
   {
-    if (child + 1 < size && a[child + 1] < a[child])  //¼ì²éÓÒ×Ó½ÚµãÊÇ·ñ´æÔÚ,ÒÔ¼°±È½Ï×óÓÒÁ½¸ö×Ó½ÚµãµÄÖµ
+    if (child + 1 < size && a[child + 1] < a[child])  //æ£€æŸ¥å³å­èŠ‚ç‚¹æ˜¯å¦å­˜åœ¨,ä»¥åŠæ¯”è¾ƒå·¦å³ä¸¤ä¸ªå­èŠ‚ç‚¹çš„å€¼
     {
-      child++;  // Ñ¡Ôñ½ÏĞ¡µÄ×Ó½Úµã
+      child++;  // é€‰æ‹©è¾ƒå°çš„å­èŠ‚ç‚¹
     }
     if (a[child] < a[parent])
     {
-      Swap(&a[child], &a[parent]);  // ½»»»¸¸×Ó½Úµã
-      parent = child;  // ¸üĞÂ¸¸×Ó½ÚµãµÄÎ»ÖÃ
+      Swap(&a[child], &a[parent]);  // äº¤æ¢çˆ¶å­èŠ‚ç‚¹
+      parent = child;  // æ›´æ–°çˆ¶å­èŠ‚ç‚¹çš„ä½ç½®
       child = parent * 2 + 1;
     }
     else
     {
-      break;  // Èç¹û²»ĞèÒª½»»»£¬ÔòÖÕÖ¹Ñ­»·
+      break;  // å¦‚æœä¸éœ€è¦äº¤æ¢ï¼Œåˆ™ç»ˆæ­¢å¾ªç¯
     }
   }
 }
 
-// ´Ó¶ÑÖĞµ¯³öÔªËØ
+// ä»å †ä¸­å¼¹å‡ºå…ƒç´ 
 void HeapPop(Hp* hp)
 {
-  assert(hp);  // È·±£¶ÑÖ¸ÕëÓĞĞ§
-  assert(hp->size > 0);  // È·±£¶Ñ·Ç¿Õ
-  Swap(&hp->a[0], &hp->a[hp->size - 1]);  // ½»»»¶Ñ¶¥ºÍ¶Ñµ×ÔªËØ
-  hp->size--;  // ¼õĞ¡¶Ñ´óĞ¡
-  DnAdd(hp->a, 0, hp->size);  // ÏÂ³Áµ÷Õû
+  assert(hp);  // ç¡®ä¿å †æŒ‡é’ˆæœ‰æ•ˆ
+  assert(hp->size > 0);  // ç¡®ä¿å †éç©º
+  Swap(&hp->a[0], &hp->a[hp->size - 1]);  // äº¤æ¢å †é¡¶å’Œå †åº•å…ƒç´ 
+  hp->size--;  // å‡å°å †å¤§å°
+  DnAdd(hp->a, 0, hp->size);  // ä¸‹æ²‰è°ƒæ•´
 }
 
-// »ñÈ¡¶Ñ¶¥ÔªËØ
+// è·å–å †é¡¶å…ƒç´ 
 HPDataType HeapTop(Hp* hp)
 {
-  assert(hp);  // È·±£¶ÑÖ¸ÕëÓĞĞ§
-  assert(hp->size > 0);  // È·±£¶Ñ·Ç¿Õ
-  return hp->a[0];  // ·µ»Ø¶Ñ¶¥ÔªËØ
+  assert(hp);  // ç¡®ä¿å †æŒ‡é’ˆæœ‰æ•ˆ
+  assert(hp->size > 0);  // ç¡®ä¿å †éç©º
+  return hp->a[0];  // è¿”å›å †é¡¶å…ƒç´ 
 }
 
-// »ñÈ¡¶ÑµÄ´óĞ¡
+// è·å–å †çš„å¤§å°
 size_t HeapSize(Hp* hp)
 {
-  assert(hp);  // È·±£¶ÑÖ¸ÕëÓĞĞ§
-  return hp->size;  // ·µ»Ø¶Ñ´óĞ¡
+  assert(hp);  // ç¡®ä¿å †æŒ‡é’ˆæœ‰æ•ˆ
+  return hp->size;  // è¿”å›å †å¤§å°
 }
 
-// ÅĞ¶Ï¶ÑÊÇ·ñÎª¿Õ
+// åˆ¤æ–­å †æ˜¯å¦ä¸ºç©º
 bool HeapEmpty(Hp* hp)
 {
-  assert(hp);  // È·±£¶ÑÖ¸ÕëÓĞĞ§
-  return hp->size == 0;  // ÅĞ¶Ï¶ÑÊÇ·ñÎª¿Õ
+  assert(hp);  // ç¡®ä¿å †æŒ‡é’ˆæœ‰æ•ˆ
+  return hp->size == 0;  // åˆ¤æ–­å †æ˜¯å¦ä¸ºç©º
 }

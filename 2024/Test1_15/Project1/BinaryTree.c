@@ -1,185 +1,185 @@
 #include "BinaryTree.h"
 
 
-//Í¨¹ıÇ°Ğò±éÀúµÄÊı×é"ABD##E#H##CF##G##"¹¹½¨¶ş²æÊ÷
-BTNode* BinaryTreeCreate(BTDataType* a, int n, int* pi)
-{
-  if (a[(*pi)] == '#'  || *pi > n)  //ÅĞ¶ÏÊÇ·ñ±éÀúÍê³É»òÕßÓöµ½#£¬¶¼·µ»ØNULL
+  //é€šè¿‡å‰åºéå†çš„æ•°ç»„"ABD##E#H##CF##G##"æ„å»ºäºŒå‰æ ‘
+  BTNode* BinaryTreeCreate(BTDataType* a, int n, int* pi)
   {
+    if (a[(*pi)] == '#'  || *pi > n)  //åˆ¤æ–­æ˜¯å¦éå†å®Œæˆæˆ–è€…é‡åˆ°#ï¼Œéƒ½è¿”å›NULL
+    {
+      (*pi)++;
+      return NULL;
+    }
+
+    BTNode* root = (BTNode*)malloc(sizeof(BTNode));
+    root->_data = a[*pi];
     (*pi)++;
-    return NULL;
-  }
-
-  BTNode* root = (BTNode*)malloc(sizeof(BTNode));
-  root->_data = a[*pi];
-  (*pi)++;
-  root->_left = BinaryTreeCreate(a, n, pi);
-  root->_right = BinaryTreeCreate(a, n, pi);
-  return root;
-}
-
-// ¶ş²æÊ÷Ïú»Ù
-void BinaryTreeDestory(BTNode** root);
-// ¶ş²æÊ÷½Úµã¸öÊı
-int BinaryTreeSize(BTNode* root)
-{
-  return root == NULL ? 0 : BinaryTreeSize(root->_left) + BinaryTreeSize(root->_right) + 1;
-}
-// ¶ş²æÊ÷Ò¶×Ó½Úµã¸öÊı
-int BinaryTreeLeafSize(BTNode* root)
-{
-  if (root == NULL)
-    return 0;
-  if (root->_left == NULL  && root->_right == NULL)
-    return 1;
-  return BinaryTreeLeafSize(root->_left) + BinaryTreeLeafSize(root->_right);
-}
-// ¶ş²æÊ÷µÚk²ã½Úµã¸öÊı
-int BinaryTreeLevelKSize(BTNode* root, int k)
-{
-  if (root == NULL || k < 1)
-    return 0;
-  if (k == 1)
-    return 1;
-
-  return BinaryTreeLevelKSize(root->_left, k - 1) + BinaryTreeLevelKSize(root->_right, k - 1);
-}
-// ¶ş²æÊ÷²éÕÒÖµÎªxµÄ½Úµã
-BTNode* BinaryTreeFind(BTNode* root, BTDataType x)
-{
-  
-  // Èç¹ûµ±Ç°½ÚµãÎª¿Õ£¬·µ»Ø NULL¡£ÕâÒâÎ¶×ÅÎÒÃÇÒÑ¾­µ½´ïÊ÷µÄÄ©¶Ë»òÕßÊ÷±¾ÉíÎª¿Õ¡£
-  if (root == NULL)
-    return NULL;
-
-  // Èç¹ûµ±Ç°½ÚµãµÄÖµµÈÓÚÒª²éÕÒµÄÖµ x£¬·µ»Øµ±Ç°½ÚµãµÄÖ¸Õë¡£
-  if (root->_data == x)
-    printf("ÕÒµ½ÁËËüÊÇ£º%c",root->_data);
-  else
-    printf("Ã»ÓĞÕÒµ½£¡", root->_data);
+    root->_left = BinaryTreeCreate(a, n, pi);
+    root->_right = BinaryTreeCreate(a, n, pi);
     return root;
+  }
 
-  // ÔÚ×ó×ÓÊ÷ÖĞµİ¹é²éÕÒÖµÎª x µÄ½Úµã¡£
-  BTNode* leftResult = BinaryTreeFind(root->_left, x);
+  // äºŒå‰æ ‘é”€æ¯
+  void BinaryTreeDestory(BTNode** root);
+  // äºŒå‰æ ‘èŠ‚ç‚¹ä¸ªæ•°
+  int BinaryTreeSize(BTNode* root)
+  {
+    return root == NULL ? 0 : BinaryTreeSize(root->_left) + BinaryTreeSize(root->_right) + 1;
+  }
+  // äºŒå‰æ ‘å¶å­èŠ‚ç‚¹ä¸ªæ•°
+  int BinaryTreeLeafSize(BTNode* root)
+  {
+    if (root == NULL)
+      return 0;
+    if (root->_left == NULL  && root->_right == NULL)
+      return 1;
+    return BinaryTreeLeafSize(root->_left) + BinaryTreeLeafSize(root->_right);
+  }
+  // äºŒå‰æ ‘ç¬¬kå±‚èŠ‚ç‚¹ä¸ªæ•°
+  int BinaryTreeLevelKSize(BTNode* root, int k)
+  {
+    if (root == NULL || k < 1)
+      return 0;
+    if (k == 1)
+      return 1;
 
-  // Èç¹ûÔÚ×ó×ÓÊ÷ÖĞÕÒµ½ÁËÕâ¸öÖµ£¬·µ»Ø¸Ã½ÚµãµÄÖ¸Õë¡£
-  if (leftResult != NULL)
-    return leftResult;
-
-  // Èç¹û×ó×ÓÊ÷ÖĞÃ»ÓĞÕÒµ½£¬¼ÌĞøÔÚÓÒ×ÓÊ÷ÖĞµİ¹é²éÕÒ¡£
-  return BinaryTreeFind(root->_right, x);
-}
-
-// ¶ş²æÊ÷Ç°Ğò±éÀú 
-void BinaryTreePrevOrder(BTNode* root)
-{
+    return BinaryTreeLevelKSize(root->_left, k - 1) + BinaryTreeLevelKSize(root->_right, k - 1);
+  }
+  // äºŒå‰æ ‘æŸ¥æ‰¾å€¼ä¸ºxçš„èŠ‚ç‚¹
+  BTNode* BinaryTreeFind(BTNode* root, BTDataType x)
+  {
+  
+    // å¦‚æœå½“å‰èŠ‚ç‚¹ä¸ºç©ºï¼Œè¿”å› NULLã€‚è¿™æ„å‘³ç€æˆ‘ä»¬å·²ç»åˆ°è¾¾æ ‘çš„æœ«ç«¯æˆ–è€…æ ‘æœ¬èº«ä¸ºç©ºã€‚
     if (root == NULL)
       return NULL;
 
-    printf("%c ", root->_data);
-    BinaryTreePrevOrder(root->_left);
-    BinaryTreePrevOrder(root->_right);
-}
-// ¶ş²æÊ÷ÖĞĞò±éÀú
-void BinaryTreeInOrder(BTNode* root)
-{
-    if (root == NULL)
-      return NULL;
+    // å¦‚æœå½“å‰èŠ‚ç‚¹çš„å€¼ç­‰äºè¦æŸ¥æ‰¾çš„å€¼ xï¼Œè¿”å›å½“å‰èŠ‚ç‚¹çš„æŒ‡é’ˆã€‚
+    if (root->_data == x)
+      printf("æ‰¾åˆ°äº†å®ƒæ˜¯ï¼š%c",root->_data);
+    else
+      printf("æ²¡æœ‰æ‰¾åˆ°ï¼", root->_data);
+      return root;
 
-    BinaryTreeInOrder(root->_left);
-    printf("%c ", root->_data);
-    BinaryTreeInOrder(root->_right);
-}
-// ¶ş²æÊ÷ºóĞò±éÀú
-void BinaryTreePostOrder(BTNode* root)
-{
-    if (root == NULL)
-      return NULL;
-    BinaryTreePostOrder(root->_left);
-    BinaryTreePostOrder(root->_right);
-    printf("%c ", root->_data);
+    // åœ¨å·¦å­æ ‘ä¸­é€’å½’æŸ¥æ‰¾å€¼ä¸º x çš„èŠ‚ç‚¹ã€‚
+    BTNode* leftResult = BinaryTreeFind(root->_left, x);
 
-}
+    // å¦‚æœåœ¨å·¦å­æ ‘ä¸­æ‰¾åˆ°äº†è¿™ä¸ªå€¼ï¼Œè¿”å›è¯¥èŠ‚ç‚¹çš„æŒ‡é’ˆã€‚
+    if (leftResult != NULL)
+      return leftResult;
+
+    // å¦‚æœå·¦å­æ ‘ä¸­æ²¡æœ‰æ‰¾åˆ°ï¼Œç»§ç»­åœ¨å³å­æ ‘ä¸­é€’å½’æŸ¥æ‰¾ã€‚
+    return BinaryTreeFind(root->_right, x);
+  }
+
+  // äºŒå‰æ ‘å‰åºéå† 
+  void BinaryTreePrevOrder(BTNode* root)
+  {
+      if (root == NULL)
+        return NULL;
+
+      printf("%c ", root->_data);
+      BinaryTreePrevOrder(root->_left);
+      BinaryTreePrevOrder(root->_right);
+  }
+  // äºŒå‰æ ‘ä¸­åºéå†
+  void BinaryTreeInOrder(BTNode* root)
+  {
+      if (root == NULL)
+        return NULL;
+
+      BinaryTreeInOrder(root->_left);
+      printf("%c ", root->_data);
+      BinaryTreeInOrder(root->_right);
+  }
+  // äºŒå‰æ ‘ååºéå†
+  void BinaryTreePostOrder(BTNode* root)
+  {
+      if (root == NULL)
+        return NULL;
+      BinaryTreePostOrder(root->_left);
+      BinaryTreePostOrder(root->_right);
+      printf("%c ", root->_data);
+
+  }
 
 
-// ²ãĞò±éÀú
-void BinaryTreeLevelOrder(BTNode* root) {
-  if (root == NULL) 
-    return; // Èç¹ûÊ÷Îª¿Õ£¬ÔòÖ±½Ó·µ»Ø
+  // å±‚åºéå†
+  void BinaryTreeLevelOrder(BTNode* root) {
+    if (root == NULL) 
+      return; // å¦‚æœæ ‘ä¸ºç©ºï¼Œåˆ™ç›´æ¥è¿”å›
   
 
-  Queue q;
-  QInit(&q); // ³õÊ¼»¯¶ÓÁĞ
-  QPush(&q, root); // ½«¸ù½ÚµãÈë¶Ó
+    Queue q;
+    QInit(&q); // åˆå§‹åŒ–é˜Ÿåˆ—
+    QPush(&q, root); // å°†æ ¹èŠ‚ç‚¹å…¥é˜Ÿ
 
-  while (!QueueEmpty(&q))
-  {
-    BTNode* front = QueueFront(&q); // È¡µÃ¶ÓÊ×ÔªËØ
-    QPop(&q); // ½«¶ÓÊ×ÔªËØ³ö¶Ó
+    while (!QueueEmpty(&q))
+    {
+      BTNode* front = QueueFront(&q); // å–å¾—é˜Ÿé¦–å…ƒç´ 
+      QPop(&q); // å°†é˜Ÿé¦–å…ƒç´ å‡ºé˜Ÿ
 
-    // ´¦Àíµ±Ç°½Úµã£¬ÀıÈç´òÓ¡½ÚµãµÄÖµ
-    printf("%c ", front->_data);
-
-    if (front->_left != NULL) {
-      QPush(&q, front->_left); // ½«×ó×Ó½ÚµãÈë¶Ó
-    }
-    if (front->_right != NULL) {
-      QPush(&q, front->_right); // ½«ÓÒ×Ó½ÚµãÈë¶Ó
-    }
-  }
-
-  QDestroy(&q); // Ïú»Ù¶ÓÁĞ£¬ÊÍ·Å×ÊÔ´
-}
-
-
-// ÅĞ¶Ï¶ş²æÊ÷ÊÇ·ñÊÇÍêÈ«¶ş²æÊ÷
-int BinaryTreeComplete(BTNode* root) {
-  if (root == NULL) {
-    return 1; // ¿ÕÊ÷ÈÏÎªÊÇÍêÈ«¶ş²æÊ÷
-  }
-
-  Queue q;
-  QInit(&q);
-  QPush(&q, root);
-  int level = 0; // ¼ÇÂ¼²ã¼¶
-  bool mustBeLeaf = false; // ±ê¼ÇÊÇ·ñ±ØĞëÎªÒ¶×Ó½Úµã
-
-  while (!QueueEmpty(&q)) {
-    int size = QueueSize(&q); // µ±Ç°²ãµÄ½ÚµãÊı
-    level++;
-    for (int i = 0; i < size; i++) {
-      BTNode* front = QueueFront(&q);
-      QPop(&q);
-
-      // Èç¹û±ê¼ÇÎª±ØĞëÊÇÒ¶×Ó½Úµã£¬µ«µ±Ç°½Úµã²»ÊÇÒ¶×Ó½Úµã£¬Ôò²»ÊÇÍêÈ«¶ş²æÊ÷
-      if (mustBeLeaf && (front->_left != NULL || front->_right != NULL)) {
-        return 0;
-      }
-
-      // Èç¹ûµ±Ç°½ÚµãÓĞÓÒº¢×Óµ«Ã»ÓĞ×óº¢×Ó£¬Ôò²»ÊÇÍêÈ«¶ş²æÊ÷
-      if (front->_left == NULL && front->_right != NULL) {
-        return 0;
-      }
+      // å¤„ç†å½“å‰èŠ‚ç‚¹ï¼Œä¾‹å¦‚æ‰“å°èŠ‚ç‚¹çš„å€¼
+      printf("%c ", front->_data);
 
       if (front->_left != NULL) {
-        QPush(&q, front->_left);
+        QPush(&q, front->_left); // å°†å·¦å­èŠ‚ç‚¹å…¥é˜Ÿ
       }
-      else {
-        // Èç¹û×óº¢×ÓÎª¿Õ£¬ÔòºóÃæµÄ½Úµã¶¼±ØĞëÊÇÒ¶×Ó½Úµã
-        mustBeLeaf = true;
-      }
-
       if (front->_right != NULL) {
-        QPush(&q, front->_right);
-      }
-      else {
-        // Èç¹ûÓÒº¢×ÓÎª¿Õ£¬ÔòºóÃæµÄ½Úµã¶¼±ØĞëÊÇÒ¶×Ó½Úµã
-        mustBeLeaf = true;
+        QPush(&q, front->_right); // å°†å³å­èŠ‚ç‚¹å…¥é˜Ÿ
       }
     }
+
+    QDestroy(&q); // é”€æ¯é˜Ÿåˆ—ï¼Œé‡Šæ”¾èµ„æº
   }
 
-  QDestroy(&q);
-  return 1; // ±éÀú½áÊøÃ»ÓĞ·¢ÏÖÎ¥·´ÍêÈ«¶ş²æÊ÷µÄ¹æÔò£¬·µ»Ø1
-}
+
+  // åˆ¤æ–­äºŒå‰æ ‘æ˜¯å¦æ˜¯å®Œå…¨äºŒå‰æ ‘
+  int BinaryTreeComplete(BTNode* root) {
+    if (root == NULL) {
+      return 1; // ç©ºæ ‘è®¤ä¸ºæ˜¯å®Œå…¨äºŒå‰æ ‘
+    }
+
+    Queue q;
+    QInit(&q);
+    QPush(&q, root);
+    int level = 0; // è®°å½•å±‚çº§
+    bool mustBeLeaf = false; // æ ‡è®°æ˜¯å¦å¿…é¡»ä¸ºå¶å­èŠ‚ç‚¹
+
+    while (!QueueEmpty(&q)) {
+      int size = QueueSize(&q); // å½“å‰å±‚çš„èŠ‚ç‚¹æ•°
+      level++;
+      for (int i = 0; i < size; i++) {
+        BTNode* front = QueueFront(&q);
+        QPop(&q);
+
+        // å¦‚æœæ ‡è®°ä¸ºå¿…é¡»æ˜¯å¶å­èŠ‚ç‚¹ï¼Œä½†å½“å‰èŠ‚ç‚¹ä¸æ˜¯å¶å­èŠ‚ç‚¹ï¼Œåˆ™ä¸æ˜¯å®Œå…¨äºŒå‰æ ‘
+        if (mustBeLeaf && (front->_left != NULL || front->_right != NULL)) {
+          return 0;
+        }
+
+        // å¦‚æœå½“å‰èŠ‚ç‚¹æœ‰å³å­©å­ä½†æ²¡æœ‰å·¦å­©å­ï¼Œåˆ™ä¸æ˜¯å®Œå…¨äºŒå‰æ ‘
+        if (front->_left == NULL && front->_right != NULL) {
+          return 0;
+        }
+
+        if (front->_left != NULL) {
+          QPush(&q, front->_left);
+        }
+        else {
+          // å¦‚æœå·¦å­©å­ä¸ºç©ºï¼Œåˆ™åé¢çš„èŠ‚ç‚¹éƒ½å¿…é¡»æ˜¯å¶å­èŠ‚ç‚¹
+          mustBeLeaf = true;
+        }
+
+        if (front->_right != NULL) {
+          QPush(&q, front->_right);
+        }
+        else {
+          // å¦‚æœå³å­©å­ä¸ºç©ºï¼Œåˆ™åé¢çš„èŠ‚ç‚¹éƒ½å¿…é¡»æ˜¯å¶å­èŠ‚ç‚¹
+          mustBeLeaf = true;
+        }
+      }
+    }
+
+    QDestroy(&q);
+    return 1; // éå†ç»“æŸæ²¡æœ‰å‘ç°è¿åå®Œå…¨äºŒå‰æ ‘çš„è§„åˆ™ï¼Œè¿”å›1
+  }
 

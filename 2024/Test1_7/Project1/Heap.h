@@ -4,28 +4,30 @@
 #include <stdbool.h>
 #include <assert.h>
 
-// ¶ÑµÄÊı¾İÀàĞÍ¶¨Òå
+// å †çš„æ•°æ®ç±»å‹å®šä¹‰
 typedef int HPDataType;
 
-// ¶ÑµÄ½á¹¹Ìå¶¨Òå
+// å †çš„ç»“æ„ä½“å®šä¹‰
 typedef struct Heap
 {
-  HPDataType* a;  // Ö¸Ïò¶ÑÊı×éµÄÖ¸Õë
-  size_t size;    // ¶Ñµ±Ç°µÄ´óĞ¡
-  int capacity;   // ¶ÑµÄ×î´óÈİÁ¿
+  HPDataType* a;  // æŒ‡å‘å †æ•°ç»„çš„æŒ‡é’ˆ
+  size_t size;    // å †å½“å‰çš„å¤§å°
+  int capacity;   // å †çš„æœ€å¤§å®¹é‡
 } Hp;
 
-// º¯ÊıÉùÃ÷²¿·Ö
-void HeapInit(Hp* hp);  // ³õÊ¼»¯¶Ñ
+// å‡½æ•°å£°æ˜éƒ¨åˆ†
+void HeapInit(Hp* hp);  // åˆå§‹åŒ–å †
 
-void HeapDestroy(Hp* hp);  // Ïú»Ù¶Ñ
+void HeapDestroy(Hp* hp);  // é”€æ¯å †
 
-void HeapPush(Hp* hp, HPDataType x);  // Ïò¶ÑÖĞ²åÈëÔªËØ
+void HeapPush(Hp* hp, HPDataType x);  // å‘å †ä¸­æ’å…¥å…ƒç´ 
 
-void HeapPop(Hp* hp);  // ´Ó¶ÑÖĞµ¯³öÔªËØ
+void HeapPop(Hp* hp);  // ä»å †ä¸­å¼¹å‡ºå…ƒç´ 
 
-HPDataType HeapTop(Hp* hp);  // »ñÈ¡¶Ñ¶¥ÔªËØ
+HPDataType HeapTop(Hp* hp);  // è·å–å †é¡¶å…ƒç´ 
 
-size_t HeapSize(Hp* hp);  // »ñÈ¡¶ÑµÄ´óĞ¡
+size_t HeapSize(Hp* hp);  // è·å–å †çš„å¤§å°
 
-bool HeapEmpty(Hp* hp);  // ÅĞ¶Ï¶ÑÊÇ·ñÎª¿Õ
+bool HeapEmpty(Hp* hp);  // åˆ¤æ–­å †æ˜¯å¦ä¸ºç©º
+
+
